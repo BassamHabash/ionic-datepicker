@@ -303,6 +303,7 @@ angular.module('ionic-datepicker.provider', [])
             cssClass: 'ionic_datepicker_popup',
             buttons: buttons
           });
+          provider['popUpPromise'] = $scope.popup;
         } else {
           openModal();
         }

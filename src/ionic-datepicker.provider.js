@@ -51,8 +51,15 @@ angular.module('ionic-datepicker.provider', [])
         changeDaySelected();
       };
 
+      $scope.disabledNextMonthBtn = function () {
+        return $scope.toDate && $scope.currentDate.getFullYear() >= new Date($scope.toDate).getFullYear() && $scope.currentDate.getMonth() >= new Date($scope.toDate).getMonth();
+      }
+
       //Next month
       $scope.nextMonth = function () {
+        if ($scope.disabledNextMonthBtn()) {
+          return;
+        }
         if ($scope.currentDate.getMonth() === 11) {
           $scope.currentDate.setFullYear($scope.currentDate.getFullYear());
         }

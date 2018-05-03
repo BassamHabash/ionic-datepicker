@@ -119,6 +119,21 @@ angular.module('ionic-datepicker.provider', [])
         }
       }
 
+      function getMonthLists(to) {
+        var monthsList = [];
+        if ($scope.mainObj.monthsList && $scope.mainObj.monthsList.length === 12) {
+          monthsList = $scope.mainObj.monthsList;
+        } else {
+          monthsList = IonicDatepickerService.monthsList;
+        }
+
+        var maxMonth = 12;
+        if (to && (!$scope.data.currentYear || $scope.data.currentYear === new Date(to).getFullYear())) {
+          maxMonth = new Date(to).getMonth() + 1;
+        }
+        return monthsList.slice(0, maxMonth);
+      }
+
       //Refresh the list of the dates of a month
       function refreshDateList(currentDate) {
         currentDate = resetHMSM(currentDate);
@@ -127,23 +142,19 @@ angular.module('ionic-datepicker.provider', [])
         var firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDate();
         var lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
 
-        $scope.monthsList = [];
-        if ($scope.mainObj.monthsList && $scope.mainObj.monthsList.length === 12) {
-          $scope.monthsList = $scope.mainObj.monthsList;
-        } else {
-          $scope.monthsList = IonicDatepickerService.monthsList;
-        }
+        $scope.monthsList = getMonthLists($scope.mainObj.to);
 
         $scope.yearsList = IonicDatepickerService.getYearsList($scope.mainObj.from, $scope.mainObj.to);
 
         $scope.dayList = [];
-
+        var currentMonth = currentDate.getMonth() > $scope.monthsList.length ? $scope.monthsList.length - 1 : currentDate.getMonth();
+        $scope.currentDate.setMonth(currentMonth);
         var tempDate, disabled;
-        $scope.firstDayEpoch = resetHMSM(new Date(currentDate.getFullYear(), currentDate.getMonth(), firstDay)).getTime();
-        $scope.lastDayEpoch = resetHMSM(new Date(currentDate.getFullYear(), currentDate.getMonth(), lastDay)).getTime();
+        $scope.firstDayEpoch = resetHMSM(new Date(currentDate.getFullYear(), currentMonth, firstDay)).getTime();
+        $scope.lastDayEpoch = resetHMSM(new Date(currentDate.getFullYear(), currentMonth, lastDay)).getTime();
 
         for (var i = firstDay; i <= lastDay; i++) {
-          tempDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), i);
+          tempDate = new Date(currentDate.getFullYear(), currentMonth, i);
           disabled = (tempDate.getTime() < $scope.fromDate) || (tempDate.getTime() > $scope.toDate) || $scope.mainObj.disableWeekdays.indexOf(tempDate.getDay()) >= 0;
 
           $scope.dayList.push({
@@ -167,7 +178,7 @@ angular.module('ionic-datepicker.provider', [])
         $scope.rows = [0, 7, 14, 21, 28, 35];
         $scope.cols = [0, 1, 2, 3, 4, 5, 6];
 
-        $scope.data.currentMonth = $scope.mainObj.monthsList[currentDate.getMonth()];
+        $scope.data.currentMonth = $scope.mainObj.monthsList[currentMonth];
         $scope.data.currentYear = currentDate.getFullYear();
         $scope.data.currentMonthSelected = angular.copy($scope.data.currentMonth);
         $scope.currentYearSelected = angular.copy($scope.data.currentYear);

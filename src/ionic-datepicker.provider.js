@@ -78,7 +78,7 @@ angular.module('ionic-datepicker.provider', [])
         newSelectedDate.setMonth($scope.currentDate.getMonth());
         newSelectedDate.setYear($scope.currentDate.getFullYear());
         var today = new Date($scope.today);
-        if ($scope.currentDate.getFullYear() === today.getFullYear() && $scope.currentDate.getMonth() === today.getMonth() && +newSelectedDate.getDate > +today.getDate()) {
+        if ($scope.currentDate.getFullYear() === today.getFullYear() && $scope.currentDate.getMonth() === today.getMonth() && +newSelectedDate.getDate() > +today.getDate()) {
           newSelectedDate.setDate(today.getDate());
         }
         $scope.selctedDateEpoch = newSelectedDate.getTime();

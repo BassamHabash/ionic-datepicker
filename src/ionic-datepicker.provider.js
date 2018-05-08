@@ -82,7 +82,7 @@ angular.module('ionic-datepicker.provider', [])
           newSelectedDate.setDate(today.getDate());
         }
         $scope.selctedDateEpoch = newSelectedDate.getTime();
-        $scope.mainObj.callback($scope.selctedDateEpoch);
+        // $scope.mainObj.callback($scope.selctedDateEpoch);
       }
 
       //Date selected
@@ -90,7 +90,7 @@ angular.module('ionic-datepicker.provider', [])
         if (!selectedDate || Object.keys(selectedDate).length === 0) return;
         $scope.selctedDateEpoch = selectedDate.epoch;
         if ($scope.mainObj.closeOnSelect) {
-          $scope.mainObj.callback($scope.selctedDateEpoch);
+          // $scope.mainObj.callback($scope.selctedDateEpoch);
           if ($scope.mainObj.templateType.toLowerCase() == 'popup') {
             $scope.popup.close();
           } else {
@@ -151,7 +151,7 @@ angular.module('ionic-datepicker.provider', [])
         $scope.yearsList = IonicDatepickerService.getYearsList($scope.mainObj.from, $scope.mainObj.to);
 
         $scope.dayList = [];
-        var currentMonth = currentDate.getMonth() > $scope.monthsList.length ? $scope.monthsList.length - 1 : currentDate.getMonth();
+        var currentMonth = currentDate.getMonth() >= $scope.monthsList.length ? $scope.monthsList.length - 1 : currentDate.getMonth();
         $scope.currentDate.setMonth(currentMonth);
         var tempDate, disabled;
         $scope.firstDayEpoch = resetHMSM(new Date(currentDate.getFullYear(), currentMonth, firstDay)).getTime();
@@ -303,7 +303,7 @@ angular.module('ionic-datepicker.provider', [])
 
               refreshDateList(new Date());
               $scope.selctedDateEpoch = resetHMSM(today).getTime();
-              $scope.mainObj.callback($scope.selctedDateEpoch);
+              // $scope.mainObj.callback($scope.selctedDateEpoch);
               if (!$scope.mainObj.closeOnSelect) {
                 e.preventDefault();
               }
